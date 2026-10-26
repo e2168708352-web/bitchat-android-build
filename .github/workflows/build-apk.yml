@@ -1,0 +1,112 @@
+name: Build bitchat Android APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: "bitchat-android git ref (branch, tag, or commit SHA)"
+        required: false
+        default: "main"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build universal debug APK
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout bitchat-android
+        uses: actions/checkout@v4
+        with:
+          repository: permissionlesstech/bitchat-android
+          ref: ${{ github.event.inputs.source_ref }}
+          path: src
+          fetch-depth: 1
+
+      - name: Record source provenance
+        working-directory: src
+        run: |
+          git rev-parse HEAD | tee "$GITHUB_WORKSPACE/source-commit.txt"
+          git log -1 --format='%H%n%ci%n%s' | tee "$GITHUB_WORKSPACE/source-commit-info.txt"
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      # ubuntu-24.04 ships the Android SDK, but sdkmanager is not on PATH.
+      # Do not use android-actions/setup-android: its `sdkmanager tools` step
+      # fails on current images because the `tools` package was removed.
+      - name: Install Android platform and build tools
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          SDKMGR="$(ls -d "$SDK_ROOT"/cmdline-tools/*/bin/sdkmanager 2>/dev/null | sort -V | tail -1)"
+          if [ -z "$SDKMGR" ]; then echo "sdkmanager not found under $SDK_ROOT"; exit 1; fi
+          echo "ANDROID_HOME=$SDK_ROOT"
+          echo "sdkmanager=$SDKMGR"
+          yes | "$SDKMGR" --licenses >/dev/null || true
+          "$SDKMGR" \
+            "platforms;android-37.0" \
+            "build-tools;37.0.0" \
+            "platform-tools"
+          ls "$SDK_ROOT/build-tools/37.0.0" | head
+
+      - name: Build universal debug APK
+        working-directory: src
+        run: |
+          set -o pipefail
+          chmod +x gradlew
+          ./gradlew :app:assembleDebug --console=plain --no-daemon --stacktrace 2>&1 | tee build.log
+
+      - name: Verify APK metadata and signature
+        working-directory: src
+        run: |
+          set -euo pipefail
+          APK=app/build/outputs/apk/debug/app-universal-debug.apk
+          test -f "$APK"
+          ls -lh app/build/outputs/apk/debug/
+          sha256sum "$APK" | tee "$GITHUB_WORKSPACE/bitchat-android.apk.sha256"
+
+          SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          BT="$SDK_ROOT/build-tools/37.0.0"
+
+          "$BT/aapt" dump badging "$APK" |
+            grep -E "^(package|application-label|sdkVersion|targetSdkVersion|native-code)" |
+            tee "$GITHUB_WORKSPACE/bitchat-apk-badging.txt"
+
+          "$BT/apksigner" verify --print-certs "$APK" |
+            tee "$GITHUB_WORKSPACE/bitchat-apk-signer.txt"
+
+          cp "$APK" "$GITHUB_WORKSPACE/bitchat-android-universal-debug.apk"
+          unzip -l "$GITHUB_WORKSPACE/bitchat-android-universal-debug.apk" |
+            tee "$GITHUB_WORKSPACE/bitchat-apk-contents.txt"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: bitchat-android-debug
+          path: |
+            bitchat-android-universal-debug.apk
+            bitchat-android.apk.sha256
+            bitchat-apk-badging.txt
+            bitchat-apk-signer.txt
+            bitchat-apk-contents.txt
+            source-commit.txt
+            source-commit-info.txt
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-build-log
+          path: src/build.log
+          if-no-files-found: ignore
+          retention-days: 7
