@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bitchat 安装包下载</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --text:#1a1d21; --muted:#5f6672;
+    --line:#e3e6ea; --accent:#2f6fed; --accent-soft:#eaf1ff;
+    --ok:#1f9254; --ok-soft:#e8f7ee; --warn:#a86400; --warn-soft:#fff4e2;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+       -webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:56px 20px 72px}
+  header h1{font-size:30px;line-height:1.25;margin:0 0 10px;letter-spacing:-.02em}
+  header p{margin:0;color:var(--muted)}
+  .grid{display:grid;gap:18px;margin-top:34px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 22px 20px;
+        display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+  .card-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .card-top h2{font-size:19px;margin:0}
+  .tag{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px}
+  .tag.ok{color:var(--ok);background:var(--ok-soft)}
+  .tag.warn{color:var(--warn);background:var(--warn-soft)}
+  .file{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+        color:var(--muted);word-break:break-all;margin:0 0 14px}
+  dl{margin:0 0 18px;font-size:14px;display:grid;grid-template-columns:auto 1fr;gap:7px 14px}
+  dt{color:var(--muted)}
+  dd{margin:0;word-break:break-all}
+  dd code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
+  .btn{display:block;text-align:center;text-decoration:none;font-weight:600;font-size:15px;
+       padding:11px 16px;border-radius:10px;background:var(--accent);color:#fff;margin-top:auto}
+  .btn:hover{filter:brightness(1.07)}
+  .btn.ghost{background:var(--accent-soft);color:var(--accent);margin-top:10px}
+  .notes{margin-top:34px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 22px 18px}
+  .notes h3{font-size:16px;margin:18px 0 8px}
+  .notes ol,.notes ul{margin:0;padding-left:20px;font-size:14.5px;color:#2c3138}
+  .notes li{margin:5px 0}
+  .notes code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;
+              background:var(--bg);padding:1px 5px;border-radius:4px}
+  footer{margin-top:30px;font-size:13px;color:var(--muted);text-align:center;line-height:1.9}
+  footer a{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>bitchat 安装包下载</h1>
+    <p>云构建产物同步页 · 安卓与 iOS 双端，均从上游源码或上游官方发布同步</p>
+  </header>
+
+  <div class="grid">
+
+    <section class="card">
+      <div class="card-top">
+        <h2>Android</h2>
+        <span class="tag ok">官方签名 · 可直接安装</span>
+      </div>
+      <p class="file">bitchat-2.2.0.apk</p>
+      <dl>
+        <dt>版本</dt><dd>2.2.0（versionCode 42）</dd>
+        <dt>包名</dt><dd><code>com.bitchat.droid</code></dd>
+        <dt>系统</dt><dd>Android 8.0 / API 26 及以上</dd>
+        <dt>大小</dt><dd>52,013,804 字节（49.6 MiB）</dd>
+        <dt>SHA-256</dt><dd><code>0AE35ABA…2F75A824</code></dd>
+      </dl>
+      <a class="btn" href="https://github.com/e2168708352-web/bitchat-android-build/releases/download/v2.2.0/bitchat-2.2.0.apk">下载 APK</a>
+      <a class="btn ghost" href="https://github.com/e2168708352-web/bitchat-android-build/releases/download/v2.2.0/bitchat-2.2.0.apk.sha256">下载 SHA-256 校验文件</a>
+    </section>
+
+    <section class="card">
+      <div class="card-top">
+        <h2>iOS</h2>
+        <span class="tag warn">未签名 · 需自签</span>
+      </div>
+      <p class="file">bitchat-unsigned.ipa</p>
+      <dl>
+        <dt>版本</dt><dd>1.8.0（build 1）</dd>
+        <dt>Bundle ID</dt><dd><code>chat.bitchat</code></dd>
+        <dt>源码提交</dt><dd><code>04995f6</code></dd>
+        <dt>大小</dt><dd>9,493,150 字节（9.05 MiB）</dd>
+        <dt>SHA-256</dt><dd><code>FA799007…C0647E51</code></dd>
+      </dl>
+      <a class="btn" href="https://github.com/e2168708352-web/bitchat-ios-build/releases/download/v1.8.0/bitchat-unsigned.ipa">下载 IPA</a>
+      <a class="btn ghost" href="https://github.com/e2168708352-web/bitchat-ios-build/releases/download/v1.8.0/bitchat-unsigned.ipa.sha256">下载 SHA-256 校验文件</a>
+    </section>
+
+  </div>
+
+  <div class="notes">
+    <h3>Android 安装</h3>
+    <ol>
+      <li>允许「安装未知来源应用」，直接安装 APK 即可，官方签名无需额外处理。</li>
+      <li>如果手机上装的是本仓库此前构建的 <strong>debug 签名 2.1.0</strong>，签名不同无法覆盖安装，需先卸载旧版；卸载前建议先备份聊天身份数据。</li>
+    </ol>
+
+    <h3>iOS 安装</h3>
+    <ol>
+      <li>IPA 无签名，不能直接安装。用 <a href="https://sideloadly.io">Sideloadly</a> 或 <a href="https://altstore.io">AltStore</a> 配合自己的 Apple ID 重签。</li>
+      <li>免费 Apple ID 签名 7 天过期，续签时不要先卸载 App，以免丢数据。</li>
+      <li>分享扩展依赖 App Group <code>group.chat.bitchat</code>，免费账号可能无法配置；详细步骤见 <a href="https://github.com/e2168708352-web/bitchat-ios-build/blob/main/SIGNING.md">SIGNING.md</a>。</li>
+    </ol>
+
+    <h3>校验下载</h3>
+    <ul>
+      <li>PowerShell：<code>Get-FileHash .\文件名 -Algorithm SHA256</code></li>
+      <li>与页面上的 SHA-256 或 <code>.sha256</code> 文件内容比对，一致即为完整文件。</li>
+    </ul>
+  </div>
+
+  <footer>
+    构建仓库：
+    <a href="https://github.com/e2168708352-web/bitchat-android-build">bitchat-android-build</a> ·
+    <a href="https://github.com/e2168708352-web/bitchat-ios-build">bitchat-ios-build</a><br>
+    Android APK 同步自上游 <a href="https://github.com/permissionlesstech/bitchat-android/releases/tag/v2.2.0">官方发布</a>；
+    iOS IPA 由 GitHub Actions 从上游 <a href="https://github.com/permissionlesstech/bitchat">源码</a> 构建。<br>
+    与 bitchat 维护者无隶属关系。
+  </footer>
+
+</div>
+</body>
+</html>
